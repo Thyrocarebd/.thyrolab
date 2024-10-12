@@ -1,0 +1,298 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    background-color: #f0f2f5;
+}
+
+
+
+
+.sidebar {
+    width: 200px;
+    justify-content: center;
+    height: 100%; /* Fills the entire height of the page */
+    background-color: #1a202c;
+    overflow-y: hidden;
+    z-index: 1000;
+    position: fixed;
+}
+
+
+
+.sidebar.collapsed {
+    position: fixed;
+    width: 60px;
+    
+
+}
+
+
+
+
+
+
+.sidebar li a i {
+    min-width: 60px;
+}
+
+
+.sidebar-title{
+    color: #f0f2f5;
+}
+
+
+
+
+.sidebar.collapsed.sidebar-title,
+.sidebar.collapsed li a span,
+.sidebar.collapsed .submenu-icon {
+    display: none;
+}
+.sidebar.collapsed .sidebar-title {
+    opacity: 0;
+    width: 0;
+    margin-left: 0;
+    /* transition: cubic-bezier(0.075, 0.82, 0.165, 1); */
+}
+
+.toggle-btn {
+    /* position: fixed; */
+    left: 10px;
+    top: 10px;
+    z-index: 1000;
+}
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+
+.sidebar-title {
+    margin-top: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-left: 10px;
+    justify-content: flex-end;
+    opacity: 1;
+    /* transition: opacity 0.3s ease; */
+    white-space: nowrap;
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    padding: 0.5rem 1rem;
+}
+
+nav ul li a {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, padding 0.3s ease, margin 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #2c3e50;
+    padding: 4px 10px;
+    border-radius: 8px;
+
+}
+
+
+nav ul li a span {
+    margin-left: 1rem;
+}
+
+
+
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.submenu.open {
+    max-height: 200px;
+}
+
+.submenu li {
+    padding-left: 2rem;
+}
+
+.submenu-icon {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.open > a > .submenu-icon {
+    transform: rotate(180deg);
+}
+
+main {
+    flex-grow: 5;
+    padding: 10;
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar, main {
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+.sidebar.collapsed + main {
+    margin-left: 80px;
+}
+
+body.sidebar-collapsed main {
+    margin-left: 30px;
+}
+
+.sidebar + main {
+    margin-left: 220px;
+}
+
+body.sidebar main {
+    margin-left: 150px;
+}
+
+
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-bottom: 2rem;
+}
+
+.card {
+    align-items: center;
+    margin: 10px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 1rem;
+    width: 300px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.content-section, .excel-item {
+    margin: 10px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.content-section h2 {
+    color: #2c3e50;
+}
+
+.content-section ul {
+    padding-left: 1.5rem;
+}
+
+.excel-container{
+    display: flex;
+    flex-wrap: wrap ;
+    justify-content: flex-start;
+}
+.excel-container .excel-item{
+
+
+    margin: 10px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.ex-card ul li a{
+    text-decoration: none;
+    color: #1f1f1d; /* White text */
+    margin: 5px;
+    transition: box-shadow 0.3s ease; /* Smooth transition */
+    padding: 1px 1px;
+    border-radius: 8px;
+}  
+
+
+
+.excel-container a:hover {
+    color: #35742d; /* White text */
+
+
+}
+
+.excel-container a{
+    text-decoration: none;
+    color: rgb(61, 89, 85);
+    margin: 4px;
+    display: flex;
+
+    justify-content: space-between;
+}
+.excel-container {
+      display: flex;
+      flex-wrap: wrap;
+    justify-content: space-evenly;
+
+}
+
+.ex-card {
+    align-items: center;
+    margin: 10px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    width: 250px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/*Additional*/
+footer{
+    width: 100%;
+    height: 200px;
+    padding: 0 ;
+    margin-left: ;
+}
+
+
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        z-index: 1;
+        height :100%;
+    }
+
+    .sidebar.collapsed {
+        width: 10%;
+        height: 100%;
+    }
+
+    main {
+        margin-left: 70px;
+        padding: 20px;
+    }
+}
