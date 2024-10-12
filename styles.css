@@ -6,6 +6,38 @@ body {
     background-color: #f0f2f5;
 }
 
+header{
+    display: flex;
+    justify-content: flex-end;
+    align-content: end;
+}
+header h1 {
+    letter-spacing: 2px;
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    position: relative; /* Required for the positioning of the ::after pseudo-element */
+}
+
+header h1::after {
+    content: '';
+    display: block; /* Makes it a block element */
+    width: 98%; /* Full width of the h1 */
+    height: 1px; /* Height of the line */
+    background-color: #1a202c; /* Color of the line */
+    border-radius: 15px;
+    position: absolute; /* Position it relative to the h1 */
+    left: 0; /* Align to the left */
+    bottom: -5px; /* Space it below the h1; adjust as needed */
+}
+
+header p{
+    font-size: 0.8rem;
+    margin: 5px;
+    margin-right: 10px;
+    padding: 0;
+}
+
 
 
 
@@ -27,10 +59,6 @@ body {
     
 
 }
-
-
-
-
 
 
 .sidebar li a i {
@@ -234,12 +262,8 @@ body.sidebar main {
     border-radius: 8px;
 }  
 
-
-
-.excel-container a:hover {
+.ex-card ul li a:hover {
     color: #35742d; /* White text */
-
-
 }
 
 .excel-container a{
@@ -291,8 +315,42 @@ footer{
         height: 100%;
     }
 
-    main {
-        margin-left: 70px;
+    /* main {
+        margin-left: 700px;
         padding: 20px;
+    } */
+    /* .sidebar + main {
+        margin-left: 1000px;
+    }
+    body.sidebar main {
+        margin-left: 1500px;
+    } */
+
+    header h1 {
+        letter-spacing: 2px;
+        font-size: 1rem;
+        padding: 0;
+        margin-top: 10px;
+        margin-bottom: 2px;
+        position: relative; /* Required for the positioning of the ::after pseudo-element */
+    }
+    
+    header h1::after {
+        content: '';
+        display: block; /* Makes it a block element */
+        width: 95%; /* Full width of the h1 */
+        height: 1px; /* Height of the line */
+        background-color: #1a202c; /* Color of the line */
+        border-radius: 15px;
+        position: absolute; /* Position it relative to the h1 */
+        left: 0; /* Align to the left */
+        bottom: -5px; /* Space it below the h1; adjust as needed */
+    }
+    
+    header p{
+        font-size: 0.6rem;
+        margin: 5px;
+        margin-right: 10px;
+        padding: 0;
     }
 }
