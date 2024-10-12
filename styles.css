@@ -190,11 +190,11 @@ body.sidebar-collapsed main {
 }
 
 .sidebar + main {
-    margin-left: 220px;
+    margin-left: 230px;
 }
 
 body.sidebar main {
-    margin-left: 150px;
+    margin-left: 250px;
 }
 
 
@@ -300,6 +300,7 @@ footer{
     padding: 0 ;
     margin-left: ;
 }
+
 
 
 
