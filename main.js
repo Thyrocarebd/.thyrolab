@@ -44,6 +44,18 @@ function initializeSidebar() {
     });
 }
 
+
+// toggle Button Functionality
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const content = document.getElementById('content');
+
+    sidebar.classList.toggle('open');
+    content.classList.toggle('blur');
+}
+
+
 // Patient Table Functionality
 function initializePatientTable() {
     const tableBody = document.querySelector('#patientTable tbody');
@@ -271,3 +283,7 @@ window.onload = function() {
     // Existing onload code...
     document.getElementById('printButton').addEventListener('click', () => printDiv('container'));
 }
+
+
+
+
