@@ -2,15 +2,20 @@
 
 :root {
     --primary-color: #3498db;
-    --secondary-color: #2c3e50;
+    --secondary-color: #8d8e8c;
     --background-color: #ecf0f1;
     --input-background: #fff;
     --text-color: #333;
     --border-radius: 8px;
     --transition-speed: 0.3s;
     --sidebar-width: 200px;
-    --sidebar-collapsed-width: 80px;
+    --sidebar-collapsed-width: 50px;
 }
+
+html {
+    scroll-behavior: smooth; /* Enables smooth scrolling */
+}
+
 
 body {
     font-family: "Poppins", sans-serif;
@@ -20,7 +25,9 @@ body {
     background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.6;
+    overflow-x: hidden;
 }
+
 
 /* Header Styles */
 header {
@@ -43,7 +50,7 @@ header h1 {
 header h1::after {
     content: '';
     display: block;
-    width: 200%;
+    width: 100%;
     height: 1px;
     background-color: #1a202c;
     border-radius: 15px;
@@ -61,23 +68,22 @@ header p {
 
 /* Sidebar Styles */
 .sidebar {
-    width: 200px;
-    justify-content: center;
-    height: 100%; /* Fills the entire height of the page */
-    background-color: #1a202c;
-    overflow-y: hidden;
+    width: var(--sidebar-width);
+    height: 100%;
+    background: linear-gradient(to top left, #5852504e, #452a1ce2);
+    overflow-x: hidden;
     z-index: 1000;
     position: fixed;
+    padding: 0;
+    transition: width var(--transition-speed) ease;
 }
-
-
 
 .sidebar.collapsed { 
-    position: fixed;
-    width: 60px;
-    
-
+    width: var(--sidebar-collapsed-width);
+    transition: width var(--transition-speed) ease;
 }
+
+
 
 
 .sidebar li a i {
@@ -88,6 +94,15 @@ header p {
 .sidebar-title{
     color: #f0f2f5;
 }
+
+
+
+.toggle-btn {
+    left: 0px;
+    top: 10px;
+    z-index: 1000;
+}
+
 
 .sidebar.collapsed .sidebar-title,
 .sidebar.collapsed li a span,
@@ -101,26 +116,20 @@ header p {
     margin-left: 0;
 }
 
-.toggle-btn {
-    left: 10px;
-    top: 10px;
-    z-index: 1000;
-}
-
 .sidebar-header {
     display: flex;
     justify-content: space-between;
-    padding: 0.5rem;
+    padding: 30px 5px;
 }
 
 .sidebar-title {
-    margin-top: 30px;
+    margin-top: 5px;
     font-size: 1rem;
     font-weight: bold;
     margin-right: 10px;
     justify-content: flex-end;
     opacity: 1;
-    white-space: nowrap;
+    /* white-space: nowrap; */
 }
 
 .toggle-btn {
@@ -135,33 +144,49 @@ nav ul {
     padding: 0;
 }
 
+.sidebar nav {
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
 nav ul li {
-    padding: 0.5rem 1rem;
+    display: block;
+    padding: 0.2rem 0rem;
+    align-content: center;
 }
 
 .sidebar nav ul li a {
+    display: flex;
+    margin: 0;
+    margin-top: 0px;
+    margin-left: 0;
     color: rgb(255, 255, 255);
     text-decoration: none;
-  padding: 8px 5px;
-    display: flex;
-    align-items: center;
+    padding: 5px 10px;
+    box-sizing: content-box;
+    width: 150px;  
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+    background-color: rgba(255, 255, 255, 0); /* Initial transparent background */
 }
 
 nav ul li a:hover {
-    background-color: #2c3e50;
-  paddding: 5px 10px;
-  scale: 1.1;
-  border-radius: 8px;
+    background-color: rgba(44, 62, 80, 0.8); /* Background transitions to higher opacity */
+    transform: scale(1.05); /* Slight scaling for smoother effect */
+    opacity: 1; /* Ensures full opacity on hover */
+    border-radius: 10px;
 }
 
 nav ul li a span {
     margin-left: 1rem;
 }
 
+
 .submenu {
     max-height: 0;
+    margin-left: 15px;
     overflow: hidden;
     transition: max-height 0.3s ease;
 }
@@ -176,17 +201,21 @@ nav ul li a span {
 
 .submenu-icon {
     margin-left: auto;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease; 
 }
 
 .open > a > .submenu-icon {
     transform: rotate(180deg);
 }
 
+
+
+
 /* Main Content Styles */
 main {
     flex-grow: 1;
-    padding: 10px;
+    margin: 0;
+    padding: 0px;
     transition: margin-left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
     margin-left: var(--sidebar-width);
 }
@@ -198,7 +227,7 @@ main {
 .parent {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     padding: 20px;
 }
 
@@ -347,6 +376,101 @@ tr:nth-child(even) {
     animation: pulse 0.5s ease-out;
 }
 
+
+
+/* excell  */
+
+.container3{
+    display: flex;
+    flex-wrap: wrap ;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.cap-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.content-section, .excel-item {
+    margin: 10px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.content-section h2 {
+    color: #2c3e50;
+}
+
+.content-section ul {
+    padding-left: 1.5rem;
+}
+
+.excel-container{
+    display: flex;
+    flex-wrap: wrap ;
+    justify-content: flex-start;
+}
+.excel-container .excel-item{
+
+
+    margin: 10px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.ex-card ul li a{
+    text-decoration: none;
+    color: #1f1f1d; /* White text */
+    margin: 5px;
+    transition: box-shadow 0.3s ease; /* Smooth transition */
+    padding: 1px 1px;
+    border-radius: 8px;
+}  
+
+.ex-card ul li a:hover {
+    color: #35742d; /* White text */
+}
+
+.excel-container a{
+    text-decoration: none;
+    color: rgb(61, 89, 85);
+    margin: 4px;
+    display: flex;
+
+    justify-content: space-between;
+}
+.excel-container {
+      display: flex;
+      flex-wrap: wrap;
+    justify-content: space-evenly;
+
+}
+
+.ex-card {
+    align-items: center;
+    margin: 10px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    width: 250px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
 /* Footer Styles */
 footer {
     width: 100%;
@@ -354,6 +478,7 @@ footer {
     text-align: center;
     background-color: var(--secondary-color);
     color: white;
+    /* border-radius: var(--border-radius); */
 }
 
 /* Animations */
