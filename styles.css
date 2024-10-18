@@ -507,7 +507,7 @@ tr:nth-child(even) {
 .container3{
     display: flex;
     flex-wrap: wrap ;
-    justify-content: space-between;
+    justify-content: flex-start;
     margin: 20px;
 }
 
@@ -515,6 +515,7 @@ tr:nth-child(even) {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
+    /*margin-left:10px ;*/
 }
 
 .card h2 {
@@ -578,7 +579,7 @@ tr:nth-child(even) {
 .excel-container {
       display: flex;
       flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: flex-start;
 
 }
 
@@ -601,7 +602,7 @@ footer {
     width: 100%;
     padding: 20px;
     text-align: center;
-    background-color: var(--secondary-color);
+        background: linear-gradient(to top left, #000000, #babebe97);
     color: white;
     /* border-radius: var(--border-radius); */
 }
@@ -714,3 +715,5 @@ footer {
     height: auto;
 }
 }
+
+
