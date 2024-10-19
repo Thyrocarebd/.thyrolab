@@ -566,8 +566,7 @@ footer {
     width: 100%;
     padding: 20px;
     text-align: center;
-    box-shadow: 0 0 10px rgba(red)
-    color: white;
+    color: rgb(68, 67, 67);
 }
 
 /* Animations */
