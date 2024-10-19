@@ -37,6 +37,7 @@ header {
     align-items: center;
     padding: 15px;
     height: 50px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 header h1 {
@@ -131,6 +132,11 @@ header a {
     width: var(--sidebar-collapsed-width);
 }
 
+.no-transition {
+    transition: none !important;
+}
+
+
 .sidebar li a i {
     min-width: 60px;
 }
@@ -143,22 +149,29 @@ header a {
 
 .sidebar-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 25px 5px;
 }
 
+
+
+
 .sidebar-title {
     font-size: 0.875rem;
+    margin-top: 5px;
+    margin-left: 15px;
     font-weight: bold;
     box-sizing: content-box;
     color: #f0f2f5;
     letter-spacing: 7px;
-
+    border-radius: var(--border-radius);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.sidebar-title:hover {
+.sidebar-title:hover {  
+    margin-left: 15px;
     transform: scale(1.1);
+    border-radius: var(--border-radius);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -167,7 +180,7 @@ header a {
     border: none;
     color: white;
     cursor: pointer;
-    font-weight: 800;
+    font-weight: 300;
     transition: background-color var(--transition-speed), transform var(--transition-speed);
 }
 
@@ -210,11 +223,31 @@ nav ul li a span {
     margin-left: 1rem;
 }
 
+nav ul li.active a {
+    background-color: #007BFF; /* Change to your desired color */
+    color: white; /* Change text color if needed */
+    transition: background-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+nav ul li.active a:active {
+    background-color: #0056b3; /* Darker shade when clicked */
+    color: white; /* Change text color if needed */
+    transform: scale(0.95); /* Slightly scale down on click */
+}
 .submenu {
     max-height: 0;
     margin-left: 15px;
     overflow: hidden;
     transition: max-height 0.3s ease;
+}
+
+
+.has-submenu.open .submenu {
+    overflow: hidden;
+}
+
+.no-transition {
+    transition: none !important;
 }
 
 .submenu.open {
@@ -232,7 +265,7 @@ nav ul li a span {
     transition: transform 0.3s ease;
 }
 
-.submenu li::after{
+/* .submenu li::after{
     content: "";
     position: absolute;
     transform: translate(-50%, -50%);
@@ -240,12 +273,26 @@ nav ul li a span {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(200, 192, 192);
     transition: background-color 0.3s ease;
-}
+} */
 
 .open > a > .submenu-icon {
     transform: rotate(180deg);
+}
+
+
+/* Only apply transition when not in initial load */
+.sidebar:not(.no-transition) .submenu {
+    transition: max-height 0.3s ease-out;
+}
+
+.has-submenu.open .submenu {
+    overflow: hidden;
+}
+
+.no-transition {
+    transition: none !important;
 }
 
 /* Main Content Styles */
@@ -253,8 +300,10 @@ main {
     flex-grow: 1;
     margin-left: var(--sidebar-width);
     padding: 0;
-    transition: margin-left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    transition: margin-left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease-in-out;
+    opacity: 0; /* Initially hidden */
 }
+
 
 .sidebar.collapsed + main {
     margin-left: var(--sidebar-collapsed-width);
@@ -267,7 +316,12 @@ main {
     padding: 20px;
 }
 
-.container, .container2 {
+.parent h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.container {
     background-color: var(--input-background);
     border-radius: var(--border-radius);
     box-shadow: 0 4px 6px rgba(68, 67, 67, 0.432);
@@ -290,6 +344,11 @@ main {
     min-width: 300px;
     max-width: 600px;
     overflow-y: scroll;
+    transition: transform var(--transition-speed);
+    margin-bottom: 20px;
+    padding: 40px;
+    
+
 }
 
 /* Form Styles */
@@ -353,11 +412,16 @@ input[type="number"]:focus {
 .elisa-buttons button {
     background-color: var(--primary-color);
     color: white;
+    width: 50px;
+    align-items: center;
+    text-align: center;
+    height: 30px;
     border: none;
-    padding: 0.75rem 1rem;
+    /* padding: 0.75rem 1rem; */
     margin: 1rem 2px;
     border-radius: var(--border-radius);
     cursor: pointer;
+    font-size: 0.6rem;
     font-weight: 800;
     transition: background-color var(--transition-speed), transform var(--transition-speed);
 }
@@ -366,6 +430,47 @@ input[type="number"]:focus {
     background-color: #2980b9;
     transform: scale(1.1);
 }
+
+
+/* Dropdown styles */
+#patientCount {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+/* Hover and focus styles */
+#patientCount:hover {
+    border-color: #888; /* Change border color on hover */
+}
+
+#patientCount:focus {
+    outline: none;
+    border-color: #007bff; /* Change border color on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add shadow on focus */
+}
+
+/* Adjust the table header to align with the dropdown */
+th {
+    position: relative; /* Positioning context for dropdown */
+    padding: 8px; /* Padding for header */
+}
+
+/* Dropdown arrow styles */
+#patientCount::-ms-expand {
+    display: none; /* Hide default arrow in IE */
+}
+
+/* Style for select options */
+#patientCount option {
+    padding: 10px; /* Padding for options */
+    font-size: 14px; /* Font size for options */
+}
+
 
 /* Table Styles */
 table {
@@ -461,7 +566,7 @@ footer {
     width: 100%;
     padding: 20px;
     text-align: center;
-    background: linear-gradient(to top left, #000000, #babebe97);
+    box-shadow: 0 0 10px rgba(red)
     color: white;
 }
 
