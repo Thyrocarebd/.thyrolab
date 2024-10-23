@@ -9,7 +9,7 @@
         <script src="https://unpkg.com/lucide@latest"></script>
         
     </head>
-<body>
+<body data-page="calculation">
     <div class="sidebar collapsed" id="sidebar">
         <div class="sidebar-header">
             <button id="toggleBtn" class="toggle-btn">
@@ -23,22 +23,22 @@
             <ul>
                 <li><a href="index.html"><i data-lucide="home"></i><span>Home</span></a></li>
                 <li class="has-submenu" data-submenu-id="calculations-submenu">
-                    <a href="#"><i data-lucide="layout"></i><span>Calculations</span><i data-lucide="chevron-down" class="submenu-icon"></i></a>
+                    <a href="#"><i data-lucide="calculator"></i><span>Calculations</span><i data-lucide="chevron-down" class="submenu-icon"></i></a>
                     <ul class="submenu">
                         <li class="active" ><a href="elisa.html">ELISA</a></li>
-                        <li><a href="#">Reports</a></li>
+                        <li><a href="egfr.html">eGFR</a></li>
                     </ul>
                 </li>
                 <li class="has-submenu">
                     <a href="#"><i data-lucide="file-text"></i><span>Documents</span><i data-lucide="chevron-down" class="submenu-icon"></i></a>
                     <ul class="submenu">
-                        <li><a href="#excel">Excel</a></li>
+                        <li><a href="excel.html">Excel</a></li>
                         <li><a href="#cap">CAP</a></li>
                         <li><a href="#">Websites</a></li>
                         <li><a href="#">Other</a></li>
                     </ul>
                 </li>
-                <li><a href="#"><i data-lucide="folder"></i><span>Projects</span></a></li>
+                <li><a href="#"><i data-lucide="bar-chart"></i><span>Projects</span></a></li>
                 <li><a href="#"><i data-lucide="list"></i><span>Todo-Lists</span></a></li>
                 <li><a href="#"><i data-lucide="calendar"></i><span>Calendar</span></a></li>
                 <li><a href="#"><i data-lucide="user"></i><span>Profile</span></a></li>
@@ -48,29 +48,23 @@
     </div>
     <main>
         <header>
-                <div class="thyrocare-logo">
-                  
-                  <a href="#"><img src="https://www.thyrocarebd.com/images/logo.png" alt="Thyrocare Logo"></a>
+            <div class="thyrocare-logo">
+              
+              <a href="https://www.thyrocarebd.com/" target="_blank"><img src="https://www.thyrocarebd.com/images/logo.png" alt="Thyrocare Logo"></a>
+            </div>
+
+                <div class="cap">
+                   <a href="https://www.cap.org/" target="_blank"><img src="cap.png" alt="cap"></a> 
                 </div>
 
-                    <div class="cap">
-                        <img src="cap.png" alt="cap">
-                    </div>
-
 <div class="sidelogo">
-    <a class="black-logo" href="#" aria-label="ThyroLab Home">
-        <img src="logo3.png" alt="ThyroLab Logo" />
-        ThyroLab
-    </a>
+<a class="black-logo" href="index.html" aria-label="ThyroLab Home">
+    <img src="logo3.png" alt="ThyroLab Logo" />
+    ThyroLab
+</a>
 
-    
 </div>
-
-                    
-
-            
-
-        </header>
+</header>
       
           <div class="parent">
     <div class="container" id="container">
@@ -175,6 +169,7 @@ Reading: The intensity of the color change is measured using a spectrophotometer
 
 
 
-    <script src="main.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/calculator.js"></script>
 </body>
 </html>
