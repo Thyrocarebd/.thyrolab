@@ -555,6 +555,21 @@ tr:nth-child(even) {
     justify-content: space-between;
 }
 
+.submenu {
+    transition: max-height 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.sidebar {
+    transition: width 0.3s ease-in-out;
+}
+
+.sidebar-transition-disabled * {
+    transition: none !important;
+}
+
+
+
 /* Footer Styles */
 footer {
     margin-top: 50px;

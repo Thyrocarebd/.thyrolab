@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>ThyroLab</title>
+                <link rel="icon" href="apple-touch-icon.png">
+                <link rel="stylesheet" href="styles.css">
+                <style>
+
+
+
+ .calculator-container {
+            max-width: 800px;
+            margin: 0 auto;
+            margin-top: 40px;
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header styles */
+        .header-dil {
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 5px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .header h1 {
+            color: #1f2937;
+            font-size: 24px;
+        }
+
+        /* Input sections */
+        .dil-input-section {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .dil-input-section {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        /* Dilution buttons grid */
+        .dilution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .dilution-button {
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            background: #f3f4f6;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dilution-button:hover {
+            background: #e5e7eb;
+        }
+
+        .dilution-button.active {
+            background: #32aacf;
+            color: white;
+        }
+
+        /* Input fields */
+        input[type="number"] {
+            width: 30%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #639eb8;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .volume-input-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .volume-input-section label {
+
+            margin-right: 4px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Results section */
+        .results-section {
+            background: #eff6ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .results-section h2 {
+            color: #1f2937;
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+
+        .result-card {
+            background: white;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-card .label {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .result-card .value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2563eb;
+        }
+
+        /* Notes section */
+        .notes-section {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .notes-section h3 {
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .notes-section ul {
+            list-style-position: inside;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .notes-section li {
+            margin-bottom: 4px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .calculator-container {
+                padding: 16px;
+            }
+
+            .dilution-grid {
+                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+                <script src="https://unpkg.com/lucide@latest"></script>
+            </head>
+<body>
+    <div class="sidebar collapsed" id="sidebar">
+        <div class="sidebar-header">
+            <button id="toggleBtn" class="toggle-btn">
+                <i data-lucide="menu"></i>
+            </button>
+            <span class="sidebar-title">ThyroLab</span>
+        </div>
+        <nav>
+            <ul>
+                <li class="active"><a href="index.html"><i data-lucide="home"></i><span>Home</span></a></li>
+                <li class="has-submenu" data-submenu-id="calculations-submenu">
+                    <a href="#"><i data-lucide="calculator"></i><span>Calculations</span><i data-lucide="chevron-down" class="submenu-icon"></i></a>
+                    <ul class="submenu">
+                        <li><a href="elisa.html">ELISA</a></li>
+                        <li><a href="egfr.html">eGFR</a></li>
+                        <li><a href="dilution.html">Dilution</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i data-lucide="file-text"></i><span>Documents</span><i data-lucide="chevron-down" class="submenu-icon"></i></a>
+                    <ul class="submenu">
+                        <li><a href="excel.html">Excel</a></li>
+                        <li><a href="#cap">CAP</a></li>
+                        <li><a href="#">Websites</a></li>
+                        <li><a href="#">Other</a></li>
+                    </ul>
+                </li>
+                <li><a href="#"><i data-lucide="bar-chart"></i><span>Projects</span></a></li>
+                <li><a href="#"><i data-lucide="list"></i><span>Todo-Lists</span></a></li>
+                <li><a href="#"><i data-lucide="calendar"></i><span>Calendar</span></a></li>
+                <li><a href="#"><i data-lucide="user"></i><span>Profile</span></a></li>
+            </ul>
+        </nav>
+        
+    </div>
+    <main>
+        <header>
+                <div class="thyrocare-logo">
+                  
+                  <a href="https://www.thyrocarebd.com/" target="_blank"><img src="https://www.thyrocarebd.com/images/logo.png" alt="Thyrocare Logo"></a>
+                </div>
+
+                    <div class="cap">
+                       <a href="https://www.cap.org/" target="_blank"><img src="cap.png" alt="cap"></a> 
+                    </div>
+
+<div class="sidelogo">
+    <a class="black-logo" href="index.html" aria-label="ThyroLab Home">
+        <img src="logo3.png" alt="ThyroLab Logo" />
+        ThyroLab
+    </a>
+
+</div>
+</header>
+
+
+<div class="calculator-container">
+    <div class="header-dil">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+            <line x1="12" y1="6" x2="12" y2="18"></line>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+        <h1>Laboratory Dilution Calculator</h1>
+    </div>
+
+    <div class="dil-input-section">
+        <label>Select Dilution Factor (1:X)</label>
+        <div class="dilution-grid" id="dilutionButtons">
+            <!-- Buttons will be added by JavaScript -->
+        </div>
+        <label>Dilution factor</label>
+        <input type="number" id="customDilution" min="2" placeholder="Custom factor">
+    </div>
+
+    <div class="volume-input-section">
+        <label>Target vloume (µL)</label>
+        <input type="number" id="totalVolume" min="0" value="1000" placeholder="Enter total volume">
+    </div>
+
+    <div class="results-section">
+        <h2>Results</h2>
+        <div class="result-card">
+            <div class="label">Sample Volume (Serum/Plasma/else)</div>
+            <div class="value" id="sampleVolume">0 µL</div>
+        </div>
+        <div class="result-card">
+            <div class="label">Diluent Volume (Normal Saline/else)</div>
+            <div class="value" id="diluentVolume">0 µL</div>
+        </div>
+    </div>
+
+    <div class="notes-section">
+        <h3>Notes:</h3>
+        <ul>
+            <li>All volumes are in microliters (µL)</li>
+            <li>Minimum dilution factor is 1:2</li>
+            <li>Results are rounded to 2 decimal places</li>
+            <li>For precise measurements, always verify calculations</li>
+        </ul>
+    </div>
+</div>
+
+
+
+<footer>
+    <p>Copyright: All rights Reserved</p>
+</footer>
+
+        
+</main>
+<script>
+    // Common dilution factors
+    const commonDilutions = [2, 3, 4, 5, 10, 20, 50, 100, 200, 500, 1000];
+    let currentDilution = 2;
+
+    // Initialize the calculator
+    function init() {
+        const dilutionGrid = document.getElementById('dilutionButtons');
+        const customDilutionInput = document.getElementById('customDilution');
+        const totalVolumeInput = document.getElementById('totalVolume');
+
+        // Create dilution factor buttons
+        commonDilutions.forEach(factor => {
+            const button = document.createElement('button');
+            button.className = 'dilution-button';
+            button.textContent = `1:${factor}`;
+            button.dataset.factor = factor;
+            button.onclick = () => {
+                setActiveDilution(factor);
+                customDilutionInput.value = factor;
+                calculateVolumes();
+            };
+            dilutionGrid.appendChild(button);
+        });
+
+        // Event listeners
+        customDilutionInput.addEventListener('input', (e) => {
+            const value = Math.max(2, parseInt(e.target.value) || 2);
+            setActiveDilution(value);
+            calculateVolumes();
+        });
+
+        totalVolumeInput.addEventListener('input', calculateVolumes);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', handleKeyPress);
+
+        // Input field navigation
+        setupInputNavigation();
+
+        // Set initial state
+        setActiveDilution(2);
+        calculateVolumes();
+
+        // Show keyboard shortcuts hint
+        showKeyboardShortcuts();
+    }
+
+    // Handle keyboard shortcuts
+    function handleKeyPress(e) {
+        // Prevent shortcuts when typing in input fields
+        if (e.target.tagName === 'INPUT' && !e.altKey) {
+            return;
+        }
+
+        switch(true) {
+            // Alt + D: Focus dilution input
+            case e.altKey && e.key.toLowerCase() === 'd':
+                e.preventDefault();
+                document.getElementById('customDilution').focus();
+                break;
+            
+            // Alt + V: Focus volume input
+            case e.altKey && e.key.toLowerCase() === 'v':
+                e.preventDefault();
+                document.getElementById('totalVolume').focus();
+                break;
+
+            // Up/Down arrows for quick dilution adjustment when focused
+            case e.target.id === 'customDilution' && e.key === 'ArrowUp':
+                e.preventDefault();
+                incrementDilution(true);
+                break;
+            
+            case e.target.id === 'customDilution' && e.key === 'ArrowDown':
+                e.preventDefault();
+                incrementDilution(false);
+                break;
+
+            // Tab handling is automatic by browser
+        }
+    }
+
+    // Setup input field navigation
+    function setupInputNavigation() {
+        const inputs = ['customDilution', 'totalVolume'];
+        inputs.forEach(id => {
+            const input = document.getElementById(id);
+            
+            // Enter key moves to next input or wraps to first
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const currentIndex = inputs.indexOf(id);
+                    const nextInput = document.getElementById(
+                        inputs[(currentIndex + 1) % inputs.length]
+                    );
+                    nextInput.focus();
+                    nextInput.select();
+                }
+            });
+
+            // Select all text on focus
+            input.addEventListener('focus', function() {
+                this.select();
+            });
+        });
+    }
+
+    // Increment/decrement dilution with arrow keys
+    function incrementDilution(increase) {
+        const input = document.getElementById('customDilution');
+        let value = parseInt(input.value) || 2;
+        
+        if (increase) {
+            // Find next higher common dilution or increment by 1
+            const nextDilution = commonDilutions.find(d => d > value);
+            value = nextDilution || value + 1;
+        } else {
+            // Find next lower common dilution or decrement by 1
+            const lowerDilutions = commonDilutions.filter(d => d < value);
+            value = lowerDilutions[lowerDilutions.length - 1] || Math.max(2, value - 1);
+        }
+        
+        input.value = value;
+        setActiveDilution(value);
+        calculateVolumes();
+    }
+
+    // Show keyboard shortcuts hint
+    function showKeyboardShortcuts() {
+        const notesSection = document.querySelector('.notes-section ul');
+        const shortcutLi = document.createElement('li');
+        shortcutLi.innerHTML = `
+            <strong>Keyboard shortcuts:</strong><br>
+            • Alt + D: Focus dilution input<br>
+            • Alt + V: Focus volume input<br>
+            • ↑/↓: Adjust dilution value<br>
+            • Enter: Move to next field<br>
+            • Tab: Navigate between fields
+        `;
+        notesSection.appendChild(shortcutLi);
+    }
+
+    // Set active dilution and update UI
+    function setActiveDilution(factor) {
+        currentDilution = factor;
+        document.querySelectorAll('.dilution-button').forEach(button => {
+            button.classList.toggle('active', parseInt(button.dataset.factor) === factor);
+        });
+    }
+
+    // Calculate volumes
+    function calculateVolumes() {
+        const totalVolume = parseFloat(document.getElementById('totalVolume').value) || 0;
+        const sampleVolume = totalVolume / currentDilution;
+        const diluentVolume = totalVolume - sampleVolume;
+
+        document.getElementById('sampleVolume').textContent = `${sampleVolume.toFixed(2)} µL`;
+        document.getElementById('diluentVolume').textContent = `${diluentVolume.toFixed(2)} µL`;
+    }
+
+    // Initialize the calculator when the page loads
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+
+    <script src="js/common.js"></script>
+</body>
+</html>
