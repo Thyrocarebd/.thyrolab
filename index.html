@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>ThyroLab</title>
+                <link rel="icon" href="apple-touch-icon.png">
+                <link rel="stylesheet" href="styles.css">
+                <style>
+.home-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Default 3 columns */
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.homecon1 {
+    width: 100%;
+}
+
+.homebtn {
+    width: 100%;
+    height: 150px; /* Fixed height instead of aspect ratio */
+    background-color: #fff;
+    border-radius: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    box-shadow: 
+    inset 5px 5px 15px rgba(0, 0, 0, 0.2),
+    inset -5px -5px 15px rgba(255, 255, 255, 0.5);
+
+}
+
+.homebtn h2 {
+    margin: 0;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+    word-wrap: break-word;
+}
+
+/* Hover effect */
+.homebtn:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+    inset 5px 5px 15px rgba(0, 0, 0, 0.2),
+    inset -5px -5px 15px rgba(255, 255, 255, 0.5);
+    /* background: linear-gradient(145deg, #c4dcd9, #96b0ad); */
+}
+
+.homebtn:hover h2 {
+    transform: scale(1.05);
+}
+
+/* Active/Click effect */
+.homebtn:active {
+    transform: translateY(2px);
+    box-shadow: 
+        3px 3px 10px rgba(0,0,0,0.15),
+        -3px -3px 10px rgba(255,255,255,0.4);
+    background: linear-gradient(145deg, #8fa7a4, #b9d1ce);
+}
+
+/* Media Queries for Responsiveness */
+@media screen and (max-width: 1024px) {
+    .home-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
+        gap: 15px;
+        padding: 15px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .home-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for small tablets */
+        gap: 12px;
+        padding: 12px;
+    }
+    
+    .homebtn {
+        height: 130px;
+    }
+    
+    .homebtn h2 {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .home-container {
+        grid-template-columns: 1fr; /* Single column for mobile */
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .homebtn {
+        height: 120px;
+    }
+    
+    .homebtn h2 {
+        font-size: 0.9rem;
+    }
+}
+
+/* Fix for very small screens */
+@media screen and (max-width: 320px) {
+    .homebtn {
+        height: 100px;
+    }
+    
+    .homebtn h2 {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+}
+                </style> 
+                <script src="https://unpkg.com/lucide@latest"></script>
+            </head>
+<body>
+    <div class="sidebar collapsed" id="sidebar">
+        <div class="sidebar-header">
+            <button id="toggleBtn" class="toggle-btn">
+                <i data-lucide="menu"></i>
+            </button>
+            <span class="sidebar-title">ThyroLab</span>
+        </div>
+        <nav>
+            <ul>
+                <li class="active"><a href="index.html"><i data-lucide="home"></i><span>Home</span></a></li>
+                <li class="has-submenu" data-submenu-id="calculations-submenu">
+                    <a href="#"><i data-lucide="calculator"></i><span>Calculations</span><i data-lucide="chevron-down" class="submenu-icon"></i></a>
+                    <ul class="submenu">
+                        <li><a href="elisa.html">ELISA</a></li>
+                        <li><a href="egfr.html">eGFR</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i data-lucide="file-text"></i><span>Documents</span><i data-lucide="chevron-down" class="submenu-icon"></i></a>
+                    <ul class="submenu">
+                        <li><a href="excel.html">Excel</a></li>
+                        <li><a href="#cap">CAP</a></li>
+                        <li><a href="#">Websites</a></li>
+                        <li><a href="#">Other</a></li>
+                    </ul>
+                </li>
+                <li><a href="#"><i data-lucide="bar-chart"></i><span>Projects</span></a></li>
+                <li><a href="#"><i data-lucide="list"></i><span>Todo-Lists</span></a></li>
+                <li><a href="#"><i data-lucide="calendar"></i><span>Calendar</span></a></li>
+                <li><a href="#"><i data-lucide="user"></i><span>Profile</span></a></li>
+            </ul>
+        </nav>
+        
+    </div>
+    <main>
+        <header>
+                <div class="thyrocare-logo">
+                  
+                  <a href="https://www.thyrocarebd.com/" target="_blank"><img src="https://www.thyrocarebd.com/images/logo.png" alt="Thyrocare Logo"></a>
+                </div>
+
+                    <div class="cap">
+                       <a href="https://www.cap.org/" target="_blank"><img src="cap.png" alt="cap"></a> 
+                    </div>
+
+<div class="sidelogo">
+    <a class="black-logo" href="index.html" aria-label="ThyroLab Home">
+        <img src="logo3.png" alt="ThyroLab Logo" />
+        ThyroLab
+    </a>
+
+</div>
+</header>
+      
+
+<div class="home-container">
+    <div class="homecon1">
+        <a href="elisa.html" class="homebtn"><h2>ELISA Factor Calculator</h2></a>
+    </div>
+
+    <div class="homecon1">
+        <a href="egfr.html" class="homebtn"><h2>eGFR Calculator</h2></a>
+    </div>
+
+    <div class="homecon1">
+        <a href="#" class="homebtn"><h2>ALAC Calculator</h2></a>
+    </div>
+
+    <div class="homecon1">
+        <a href="#" class="homebtn"><h2>BLANK</h2></a>
+    </div>
+
+    <div class="homecon1">
+        <a href="#" class="homebtn"><h2>BLANK</h2></a>
+    </div>
+
+    <div class="homecon1">
+        <a href="#" class="homebtn"><h2>BLANK</h2></a>
+    </div>
+</div>
+
+
+<footer>
+    <p>Copyright: All rights Reserved</p>
+</footer>
+
+        
+</main>
+
+
+    <script src="js/common.js"></script>
+</body>
+</html>

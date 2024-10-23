@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>ThyroLab</title>
+                <link rel="icon" href="apple-touch-icon.png">
+                <link rel="stylesheet" href="styles.css">
+                <style>
+            
+                    .egfr-container {
+                        max-width: 1200px;
+                        margin: 0 auto;
+                        padding: 0;
+                        font-size: 0.8rem;
+                    }
+            
+                    .calculator-grid {
+                        display: grid;
+                        height: 600px;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 30px;
+                        margin-top: 20px;
+                    }
+
+                    .result-section{
+                        height: 600px;
+                    }
+            
+                    .input-section {
+                        background: rgba(255, 255, 255, 0.9);
+                        padding: 30px;
+                        border-radius: 20px;
+                        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+                        backdrop-filter: blur(4px);
+                        transition: transform 0.3s ease;
+                    }
+
+                    .result-section{
+                        padding: 30px;
+
+                    }
+            
+            
+
+                    .form-group {
+                        margin-bottom: 20px;
+                        position: relative;
+                    }
+            
+                    label {
+                        display: block;
+                        margin-bottom: 8px;
+                        color: #34495e;
+                        font-weight: 500;
+                    }
+            
+                    input, select {
+                        width: 100%;
+                        padding: 12px;
+                        border: 2px solid #e0e0e0;
+                        border-radius: 8px;
+                        font-size: 1rem;
+                        transition: all 0.3s ease;
+                    }
+            
+                    input:focus, select:focus {
+                        outline: none;
+                        border-color: #3498db;
+                        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+                    }
+            
+                    /* Active input highlighting */
+                    input:focus + .focus-indicator,
+                    select:focus {
+                        width: 100%;
+                        opacity: 1;
+                    }
+            
+                    .egfr-button {
+                        width: 100%;
+                        padding: 12px;
+                        background: linear-gradient(135deg, #3498db, #2980b9);
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        font-size: 1.1rem;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        position: relative;
+                        overflow: hidden;
+                    }
+            
+                    .egfr-button:hover {
+                        background: linear-gradient(135deg, #2980b9, #3498db);
+                        transform: translateY(-2px);
+                        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                    }
+            
+                    .egfr-button:active {
+                        transform: translateY(0);
+                    }
+            
+                    /* Button click effect */
+                    .egfr-button::after {
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        width: 5px;
+                        height: 5px;
+                        background: rgba(255, 255, 255, 0.5);
+                        opacity: 0;
+                        border-radius: 100%;
+                        transform: scale(1, 1) translate(-50%);
+                        transform-origin: 50% 50%;
+                    }
+            
+                    .egfr-button:focus:not(:active)::after {
+                        animation: ripple 1s ease-out;
+                    }
+            
+                    @keyframes ripple {
+                        0% {
+                            transform: scale(0, 0);
+                            opacity: 0.5;
+                        }
+                        100% {
+                            transform: scale(100, 100);
+                            opacity: 0;
+                        }
+                    }
+            
+                    .result-value {
+                        font-size: 2.5rem;
+                        color: #2c3e50;
+                        text-align: center;
+                        margin: 20px 0;
+                    }
+            
+                    .result-comment {
+                        padding: 15px;
+                        border-radius: 8px;
+                        margin-top: 20px;
+                        font-size: 1.1rem;
+                        line-height: 1.6;
+                        background: rgba(52, 152, 219, 0.1);
+                    }
+            
+                    @media (max-width: 768px) {
+                        .calculator-grid {
+                            grid-template-columns: 1fr;
+                            gap: 20px;
+                        }
+            
+                        h1 {
+                            font-size: 2rem;
+                        }
+            
+                        .input-section, .result-section {
+                            padding: 20px;
+                        }
+                    }
+                </style>
+                <script src="https://unpkg.com/lucide@latest"></script>
+            </head>
+<body>
+    <div class="sidebar collapsed" id="sidebar">
+        <div class="sidebar-header">
+            <button id="toggleBtn" class="toggle-btn">
+                <i data-lucide="menu"></i>
+            </button>
+            <span class="sidebar-title">eGFR</span>
+        </div>
+        <nav>
+            <ul>
+                <li class="active"><a href="index.html"><i data-lucide="home"></i><span>Home</span></a></li>
+                <li class="has-submenu" data-submenu-id="calculations-submenu">
+                    <a href="#"><i data-lucide="calculator"></i><span>Calculations</span><i data-lucide="chevron-down" class="submenu-icon"></i></a>
+                    <ul class="submenu">
+                        <li><a href="elisa.html">ELISA</a></li>
+                        <li><a href="egfr.html">eGFR</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i data-lucide="file-text"></i><span>Documents</span><i data-lucide="chevron-down" class="submenu-icon"></i></a>
+                    <ul class="submenu">
+                        <li><a href="excel.html">Excel</a></li>
+                        <li><a href="#cap">CAP</a></li>
+                        <li><a href="#">Websites</a></li>
+                        <li><a href="#">Other</a></li>
+                    </ul>
+                </li>
+                <li><a href="#"><i data-lucide="bar-chart"></i><span>Projects</span></a></li>
+                <li><a href="#"><i data-lucide="list"></i><span>Todo-Lists</span></a></li>
+                <li><a href="#"><i data-lucide="calendar"></i><span>Calendar</span></a></li>
+                <li><a href="#"><i data-lucide="user"></i><span>Profile</span></a></li>
+            </ul>
+        </nav>
+        
+    </div>
+    <main>
+        <header>
+            <div class="thyrocare-logo">
+              
+              <a href="https://www.thyrocarebd.com/" target="_blank"><img src="https://www.thyrocarebd.com/images/logo.png" alt="Thyrocare Logo"></a>
+            </div>
+
+                <div class="cap">
+                   <a href="https://www.cap.org/" target="_blank"><img src="cap.png" alt="cap"></a> 
+                </div>
+
+<div class="sidelogo">
+<a class="black-logo" href="index.html" aria-label="ThyroLab Home">
+    <img src="logo3.png" alt="ThyroLab Logo" />
+    ThyroLab
+</a>
+
+</div>
+</header>      
+<div class="egfr-container">
+    <h1>eGFR Calculator</h1>
+    <div class="calculator-grid">
+        <div class="input-section">
+            <form id="egfrForm" onsubmit="event.preventDefault(); calculateEGFR();">
+                <div class="form-group">
+                    <label for="creatinine">Serum Creatinine (mg/dL)</label>
+                    <input type="number" id="creatinine" step="0.01" required>
+                    <div class="focus-indicator"></div>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age (years)</label>
+                    <input type="number" id="age" required>
+                    <div class="focus-indicator"></div>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                    <div class="focus-indicator"></div>
+                </div>
+                <div class="form-group">
+                    <label for="height">Height (cm)</label>
+                    <input type="number" id="height" required>
+                    <div class="focus-indicator"></div>
+                </div>
+                <div class="form-group">
+                    <label for="weight">Weight (kg)</label>
+                    <input type="number" id="weight" required>
+                    <div class="focus-indicator"></div>
+                </div>
+                <button class="egfr-button" type="submit">Calculate eGFR</button>
+            </form>
+        </div>
+        <div class="result-section">
+            <h2>Results</h2>
+            <div class="result-value" id="egfrValue">-- mL/min/1.73m²</div>
+            <div class="result-comment" id="egfrComment">Enter patient details to calculate eGFR</div>
+        </div>
+    </div>
+</div>
+
+
+
+<footer>
+    <p>Copyright: All rights Reserved</p>
+</footer>
+
+        
+</main>
+
+<script>
+    // Set up enter key navigation
+    const inputs = ['creatinine', 'age', 'gender', 'height', 'weight'];
+    
+    inputs.forEach((id, index) => {
+        document.getElementById(id).addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (index === inputs.length - 1) {
+                    // If it's the last input, trigger calculation
+                    calculateEGFR();
+                } else {
+                    // Focus next input
+                    document.getElementById(inputs[index + 1]).focus();
+                }
+            }
+        });
+    });
+
+    function calculateEGFR() {
+        // Get input values
+        const creatinine = parseFloat(document.getElementById('creatinine').value);
+        const age = parseInt(document.getElementById('age').value);
+        const gender = document.getElementById('gender').value;
+        const height = parseInt(document.getElementById('height').value);
+        const weight = parseInt(document.getElementById('weight').value);
+
+        // Validate inputs
+        if (!creatinine || !age || !gender || !height || !weight) {
+            alert('Please fill in all fields');
+            return;
+        }
+
+        // Calculate BSA using DuBois formula
+        const bsa = 0.007184 * Math.pow(height, 0.725) * Math.pow(weight, 0.425);
+
+        // Calculate eGFR using CKD-EPI equation
+        let egfr;
+        const kappa = gender === 'female' ? 0.7 : 0.9;
+        const alpha = gender === 'female' ? -0.329 : -0.411;
+        const genderFactor = gender === 'female' ? 1.018 : 1;
+
+        const scrKappa = creatinine / kappa;
+        const minScrKappa = Math.min(scrKappa, 1);
+        const maxScrKappa = Math.max(scrKappa, 1);
+
+        egfr = 141 * 
+            Math.pow(minScrKappa, alpha) * 
+            Math.pow(maxScrKappa, -1.209) * 
+            Math.pow(0.993, age) * 
+            genderFactor;
+
+        // Adjust for BSA
+        egfr = egfr * (bsa / 1.73);
+
+        // Round to 1 decimal place
+        egfr = Math.round(egfr * 10) / 10;
+
+        // Display result
+        document.getElementById('egfrValue').textContent = `${egfr} mL/min/1.73m²`;
+        
+        // Generate comment based on eGFR value
+        let comment = '';
+        let commentColor = '';
+        
+        if (egfr >= 90) {
+            comment = 'Normal kidney function (Stage 1 CKD if other markers of kidney damage are present)';
+            commentColor = '#27ae60';
+        } else if (egfr >= 60) {
+            comment = 'Mild reduction in kidney function (Stage 2 CKD if other markers of kidney damage are present)';
+            commentColor = '#2ecc71';
+        } else if (egfr >= 45) {
+            comment = 'Mild to moderate reduction in kidney function (Stage 3a CKD)';
+            commentColor = '#f1c40f';
+        } else if (egfr >= 30) {
+            comment = 'Moderate to severe reduction in kidney function (Stage 3b CKD)';
+            commentColor = '#e67e22';
+        } else if (egfr >= 15) {
+            comment = 'Severe reduction in kidney function (Stage 4 CKD)';
+            commentColor = '#e74c3c';
+        } else {
+            comment = 'Kidney failure (Stage 5 CKD)';
+            commentColor = '#c0392b';
+        }
+
+        const commentElement = document.getElementById('egfrComment');
+        commentElement.textContent = comment;
+        commentElement.style.backgroundColor = `${commentColor}20`;
+        commentElement.style.color = commentColor;
+    }
+</script>
+
+
+    <script src="js/common.js"></script>
+</body>
+</html>

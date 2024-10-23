@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@radix-ui/react-popover": "^1.1.2",
+    "lucide-react": "^0.453.0",
+    "react-router-dom": "^6.27.0"
+  }
+}
