@@ -1,16 +1,113 @@
-// calculator.js - Contains all calculation page specific functionality
-// ==============================================================
+// Wait for the DOM to be fully loaded before initializing
 document.addEventListener('DOMContentLoaded', () => {
-    // Only initialize these if we're on the calculation page
-    if (document.getElementById('calculationForm')) {
-        initializePatientTable();
-        initializeResetButton();
-        initializePrintButton();
-        initializeCalculationForm();
+    initializeSidebar();
+    initializePatientTable();
+    initializeResetButton();
+    initializePrintButton();
+    initializeCalculationForm();
+    if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+    }
+
+    // Fade in the main content after a short delay
+    const mainContent = document.querySelector('main');
+    if (mainContent) {
+        mainContent.style.opacity = 0;
+        setTimeout(() => {
+            mainContent.style.transition = 'opacity 0.5s ease-in-out';
+            mainContent.style.opacity = 1;
+        }, 100);
     }
 });
 
-// Patient Table Functions
+// Sidebar Functionality
+function initializeSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggleBtn');
+    const submenus = document.querySelectorAll('.has-submenu');
+
+    if (!sidebar || !toggleBtn) return;
+
+    // Temporarily disable transitions on page load
+    sidebar.classList.add('no-transition');
+    document.body.classList.add('no-transition');
+    
+    // Immediately hide all submenus without transition
+    document.querySelectorAll('.submenu').forEach(submenu => {
+        submenu.style.cssText = 'transition: none; max-height: 0;';
+    });
+
+    // Apply the saved sidebar state
+    const isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+    sidebar.classList.toggle('collapsed', isCollapsed);
+    document.body.classList.toggle('sidebar-collapsed', isCollapsed);
+    document.body.classList.toggle('sidebar-expanded', !isCollapsed);
+
+    // Restore submenu states
+    restoreSubmenuStates();
+
+    // Re-enable transitions after a delay
+    setTimeout(() => {
+        sidebar.classList.remove('no-transition');
+        document.body.classList.remove('no-transition');
+        
+        // Re-enable transitions for submenus
+        document.querySelectorAll('.submenu').forEach(submenu => {
+            submenu.style.transition = '';
+        });
+    }, 100);
+
+    // Sidebar toggle functionality
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        const isCollapsed = sidebar.classList.contains('collapsed');
+        document.body.classList.toggle('sidebar-collapsed', isCollapsed);
+        document.body.classList.toggle('sidebar-expanded', !isCollapsed);
+        localStorage.setItem('sidebar-collapsed', isCollapsed);
+    });
+
+    // Submenu functionality
+    submenus.forEach(submenu => {
+        submenu.addEventListener('click', (e) => {
+            e.preventDefault();
+            submenu.classList.toggle('open');
+            const submenuList = submenu.querySelector('.submenu');
+            if (submenuList) {
+                submenuList.style.maxHeight = submenu.classList.contains('open') 
+                    ? `${submenuList.scrollHeight}px` 
+                    : null;
+            }
+            saveSubmenuStates();
+        });
+    });
+
+    // Prevent submenu links from triggering submenu toggle
+    document.querySelectorAll('.submenu a').forEach(item => {
+        item.addEventListener('click', (e) => e.stopPropagation());
+    });
+}
+
+function saveSubmenuStates() {
+    const openSubmenus = Array.from(document.querySelectorAll('.has-submenu.open'))
+        .map(sub => sub.dataset.submenuId);
+    localStorage.setItem('open-submenus', JSON.stringify(openSubmenus));
+}
+
+function restoreSubmenuStates() {
+    const openSubmenus = JSON.parse(localStorage.getItem('open-submenus') || '[]');
+    openSubmenus.forEach(id => {
+        const submenu = document.querySelector(`.has-submenu[data-submenu-id="${id}"]`);
+        if (submenu) {
+            submenu.classList.add('open');
+            const submenuList = submenu.querySelector('.submenu');
+            if (submenuList) {
+                submenuList.style.maxHeight = `${submenuList.scrollHeight}px`;
+            }
+        }
+    });
+}
+
+// Patient Table Functionality
 function initializePatientTable() {
     const tableBody = document.querySelector('#patientTable tbody');
     if (!tableBody) return;
@@ -24,6 +121,7 @@ function initializePatientTable() {
         tableBody.appendChild(row);
     }
 
+    // Add event listeners using event delegation
     tableBody.addEventListener('input', handleTableInput);
     tableBody.addEventListener('keydown', handleTableKeyDown);
 
@@ -73,11 +171,12 @@ function moveToNextTableField(event) {
 }
 
 function enableTestConcInputs(enable) {
-    document.querySelectorAll('#patientTable tbody tr input[type="number"]')
-        .forEach(input => input.disabled = !enable);
+    document.querySelectorAll('#patientTable tbody tr input[type="number"]').forEach(input => {
+        input.disabled = !enable;
+    });
 }
 
-// Reset Button Functions
+// Reset Functionality
 function initializeResetButton() {
     const resetButton = document.getElementById('resetButton');
     if (resetButton) {
@@ -107,7 +206,7 @@ function reset() {
     enableTestConcInputs(false);
 }
 
-// Print Button Functions
+// Print Functionality
 function initializePrintButton() {
     const printButton = document.getElementById('printButton');
     if (printButton) {
@@ -115,36 +214,29 @@ function initializePrintButton() {
     }
 }
 
-// Print Button Functions
-function initializePrintButton() {
-    const printButton = document.getElementById('printButton');
-    if (printButton) {
-        printButton.addEventListener('click', () => printDiv('container'));
-    }
-}
 function printDiv(divId) {
-    const elementToPrint = document.getElementById(divId);
+    let printWindow = window.open('', '_blank');
+    let elementToPrint = document.getElementById(divId);
     if (!elementToPrint) return;
 
-    const clonedElement = elementToPrint.cloneNode(true);
-
-    // Copy input values
-    const originalInputs = elementToPrint.querySelectorAll('input');
-    const clonedInputs = clonedElement.querySelectorAll('input');
+    let clonedElement = elementToPrint.cloneNode(true);
+    
+    let originalInputs = elementToPrint.querySelectorAll('input');
+    let clonedInputs = clonedElement.querySelectorAll('input');
     for (let i = 0; i < originalInputs.length; i++) {
         clonedInputs[i].value = originalInputs[i].value;
         clonedInputs[i].setAttribute('value', originalInputs[i].value);
     }
 
-    // Remove hover messages
+    // Remove hover-message elements
     clonedElement.querySelectorAll('.hover-message').forEach(el => el.remove());
 
-    const printContent = 
-        `<!DOCTYPE html>
+    let printContent = `
+        <!DOCTYPE html>
         <html>
         <head>
             <title>FACTOR Calculation Tool - Print Version</title>
-             <style>
+            <style>
                 body { 
                     font-family: Arial, sans-serif; 
                     line-height: 1.6; 
@@ -216,27 +308,25 @@ function printDiv(divId) {
         </head>
         <body>
             ${clonedElement.outerHTML}
+            <script>
+                window.onload = function() {
+                    document.querySelectorAll('input').forEach(input => {
+                        if (input.value) {
+                            input.setAttribute('value', input.value);
+                        }
+                    });
+                    window.print();
+                    window.close();
+                }
+            </script>
         </body>
         </html>`;
-
-    const printWindow = window.open('', 'Print');
-    if (!printWindow) return;
-
+    
     printWindow.document.write(printContent);
     printWindow.document.close();
-    printWindow.print();
-
-    printWindow.addEventListener('afterprint', () => {
-        printWindow.close();
-    });
-
-    setTimeout(() => {
-        if (!printWindow.closed) printWindow.close();
-    }, 2000);
 }
 
-
-// Calculation Form Functions
+// Calculation Form Functionality
 function initializeCalculationForm() {
     const form = document.getElementById('calculationForm');
     if (form) {
@@ -272,11 +362,13 @@ function moveToNextFormField(event) {
     const currentIndex = formInputs.indexOf(event.target.id);
     if (currentIndex > -1) {
         if (currentIndex < formInputs.length - 1) {
+            // Move to the next form input
             const nextInput = document.getElementById(formInputs[currentIndex + 1]);
             if (nextInput) {
                 nextInput.focus();
             }
         } else {
+            // If we're on the last form input, move to the first table input
             const firstTableInput = document.querySelector('#patientTable tbody tr:first-child input[type="number"]');
             if (firstTableInput) {
                 firstTableInput.focus();
