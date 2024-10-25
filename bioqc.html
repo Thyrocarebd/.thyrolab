@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Biochemistry Control Sheet</title>
+                <link rel="icon" href="apple-touch-icon.png">
+                <link rel="stylesheet" href="styles.css">
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+                <script src="https://unpkg.com/lucide@latest"></script>
+                <style>
+                    :root {
+                        --primary: #527852;
+                        --primary-light: #f5efe7e1;
+                        --secondary: #0277bd;
+                        --success: #2e7d32;
+                        --warning: #f57f17;
+                        --danger: #c62828;
+                        --light: #f5f6fa;
+                        --gray: #607d8b;
+                    }
+
+
+
+            .edit-mode input:not([type="number"]) {
+            background-color: #fff3e0;
+            border: 1px solid #ffb74d;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .edit-mode .range-edit {
+            width: 60px;
+            text-align: right;
+        }
+
+        .edit-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            z-index: 1000;
+        }
+
+        .btn-edit {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-save {
+            background: var(--success);
+            color: white;
+        }
+
+            
+                    .qc-container {
+                        max-width: 1400px;
+                        margin: 0 auto;
+                        padding: 40px 40px;
+                    }
+            
+                    .qc-header {
+                        /* background: linear-gradient(135deg, rgb(241, 239, 239), rgb(232, 237, 232)); */
+                     color: rgb(33, 32, 32);
+                     font-size: 0.8rem;
+
+                    }
+                    .status-lower {
+                background: #fb8c00;
+                color: white;
+            }
+            
+            .status-higher {
+                background: #f57c00;
+                color: white;
+            }
+            
+                    .qc-header h1 {
+                        margin: 0;
+                        font-size: 16px;
+                        font-weight: 600;
+                        letter-spacing: 0.5px;
+                    }
+            
+                    .qc-header p {
+                        margin: 8px 0 0;
+                        opacity: 0.9;
+                        font-size: 12px;
+                    }
+            
+                    .control-panel {
+                        display: block;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 20px;
+                        padding: 20px;
+                        background: white;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+                    }
+            
+                    .control-info {
+                        display: grid;
+                        grid-template-columns: 1fr 0.5fr 0.5fr;
+                        gap: 5px;
+                        margin-bottom: 10px;
+                    }
+            
+                    .info-card {
+                        background: white;
+                        padding: 15px;
+                        border-radius: 8px;
+                    }
+            
+                    .action-buttons {
+                        display: flex;
+                        gap: 10px;
+                    }
+            
+                    .btn {
+                        padding: 8px 16px;
+                        border: none;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        font-weight: 500;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        transition: all 0.3s ease;
+                    }
+            
+                    .btn i {
+                        font-size: 16px;
+                    }
+            
+                    .btn-primary {
+                        background: var(--secondary);
+                        color: rgb(255, 255, 255);
+                    }
+            
+                    .btn-secondary {
+                        background: var(--secondary);
+                        color: white;
+                    }
+            
+                    .btn:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    }
+
+                    .btn.btn-danger {
+                        background: var(--danger);
+                        color: white;
+                    }
+            
+                    .data-table-container {
+                        padding-top: 0;
+                        height: max-content;
+                        background: white;
+                        border-radius: 12px;
+                        overflow: hidden;
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                        font-size: 0.8rem;
+                    }   
+            
+                    .data-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+            
+                    .data-table th {
+                        background: rgba(133, 130, 130, 0.267);
+                        color: rgb(86, 84, 84);
+                        padding: 15px;
+                        text-align: left;
+                        font-weight: 600;
+                    }
+            
+                    .data-table td {
+                        padding: 7px 10px;
+                        border-bottom: 1px solid #eee;
+                    }
+            
+                    .data-table tbody tr:hover {
+                        background: #edede2c9;
+                    }
+
+
+                    .result-input {
+                        padding: 2px;
+                        border: 2px solid #e0e0e0;
+                        border-radius: 6px;
+                        font-size: 0.8rem;
+                        transition: all 0.3s ease;
+                    }
+
+                    input[type="number"] {
+                        width: 70px;
+                        height: 10px;
+                    }
+            
+                    .result-input:focus {
+                        border-color: var(--secondary);
+                        outline: none;
+                        box-shadow: 0 0 0 3px rgba(2, 119, 189, 0.1);
+                    }
+            
+                    .status {
+                        padding: 6px 12px;
+                        border-radius: 6px;
+                        font-size: 0.9em;
+                        font-weight: 500;
+                        display: inline-block;
+                        min-width: 100px;
+                        text-align: center;
+                    }
+            
+                    .status-normal {
+                        background: var(--success);
+                        color: white;
+                    }
+            
+                    .status-warning {
+                        background: var(--warning);
+                        color: white;
+                    }
+            
+                    .status-critical {
+                        background: var(--danger);
+                        color: white;
+                    }
+            
+                    .animated {
+                        transition: all 0.6s ease;
+                    }
+            
+                    @media print {
+
+                        #sidebar, #editButton {
+                            display: none;
+                        }
+
+                        .edit-controls, .action-buttons {
+                            display: none;
+                        }
+                        header {
+                            display: none;
+                        }
+                        
+                        body {
+                          
+                            background: white;
+                            padding: 0;
+                        }
+            
+                        .qc-container {
+                            max-width: 100%;
+                        }
+                    }
+            
+                    .toast {
+                        position: fixed;
+                        bottom: 20px;
+                        right: 20px;
+                        background: var(--primary);
+                        color: white;
+                        padding: 15px 25px;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                        display: none;
+                        z-index: 1000;
+                        animation: slideIn 0.3s ease;
+                    }
+            
+                    @keyframes slideIn {
+                        from {
+                            transform: translateX(100%);
+                            opacity: 0;
+                        }
+                        to {
+                            transform: translateX(0);
+                            opacity: 1;
+                        }
+                    }
+                </style>
+            </head>
+<body>
+    <div class="sidebar collapsed" id="sidebar">
+        <div class="sidebar-header">
+            <button id="toggleBtn" class="toggle-btn">
+                <i data-lucide="menu"></i>
+            </button>
+            <span class="sidebar-title">ThyroLab</span>
+        </div>
+        <nav>
+            <ul>
+                <li class="active"><a href="index.html"><i data-lucide="home"></i><span>Home</span></a></li>
+                <li class="has-submenu" data-submenu-id="calculations-submenu">
+                    <a href="#"><i data-lucide="calculator"></i><span>Calculations</span><i data-lucide="chevron-down" class="submenu-icon"></i></a>
+                    <ul class="submenu">
+                        <li><a href="elisa.html">ELISA</a></li>
+                        <li><a href="egfr.html">eGFR</a></li>
+                        <li><a href="dilution.html">Dilution</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i data-lucide="file-text"></i><span>Documents</span><i data-lucide="chevron-down" class="submenu-icon"></i></a>
+                    <ul class="submenu">
+                        <li><a href="excel.html">Excel</a></li>
+                        <li><a href="#cap">CAP</a></li>
+                        <li class="active" ><a href="bioqc.html">BIO QC</a></li>
+                        <li><a href="xpqc.html">XP QC</a></li>
+                    </ul>
+                </li>
+                <li><a href="#"><i data-lucide="bar-chart"></i><span>Projects</span></a></li>
+                <li><a href="#"><i data-lucide="list"></i><span>Todo-Lists</span></a></li>
+                <li><a href="#"><i data-lucide="calendar"></i><span>Calendar</span></a></li>
+                <li><a href="#"><i data-lucide="user"></i><span>Profile</span></a></li>
+            </ul>
+        </nav>
+        
+    </div>
+    <main>
+        <header>
+                <div class="thyrocare-logo">
+                  
+                  <a href="https://www.thyrocarebd.com/" target="_blank"><img src="https://www.thyrocarebd.com/images/logo.png" alt="Thyrocare Logo"></a>
+                </div>
+
+                    <div class="cap">
+                       <a href="https://www.cap.org/" target="_blank"><img src="cap.png" alt="cap"></a> 
+                    </div>
+
+<div class="sidelogo">
+    <a class="black-logo" href="index.html" aria-label="ThyroLab Home">
+        <img src="logo3.png" alt="ThyroLab Logo" />
+        ThyroLab
+    </a>
+
+</div>
+</header>
+      
+
+<div class="qc-container">
+
+
+    <div class="control-panel">
+        <div class="control-info">
+            <div class="info-card">
+                <div class="qc-header">
+                    <h1>THYROCARE BANGLADESH LIMITED</h1>
+                    <p>Control Sheet for ADVIA 1800 Chemistry System & Beckman Coulter AU480</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="control-info">
+            <div class="info-card">
+                <strong>Control: </strong>
+                <span class="editable" data-field="controlName">Biorad Lyphocheck Assyed Chemistry Control 1</span>
+            </div>
+            <div class="info-card">
+                <strong>Lot No:</strong> 
+                <span class="editable" data-field="lotNo">89750</span>
+            </div>
+            <div class="info-card">
+                <strong>Date:</strong> <span id="currentDate"></span>
+            </div>
+        </div>
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="exportToExcel()">
+                <i class="fas fa-file-excel"></i> Export Excel
+            </button>
+            <button class="btn btn-danger" onclick="clearAllInputs()">
+                <i class="fas fa-trash"></i> Clear All
+            </button>
+            <button class="btn btn-secondary" onclick="window.print()">
+                <i class="fas fa-print"></i> Print
+            </button>
+        </div>
+    </div>
+
+    <div class="data-table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Test Name</th>
+                    <th>Units</th>
+                    <th>Result</th>
+                    <th>Mean</th>
+                    <th>Low</th>
+                    <th>High</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="dataTableBody">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="edit-controls">
+    <button class="btn btn-edit" id="editButton" onclick="toggleEditMode()">
+        <i class="fas fa-edit"></i> Edit
+    </button>
+    <button class="btn btn-save" id="saveButton" onclick="saveChanges()" style="display: none;">
+        <i class="fas fa-save"></i> Save
+    </button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+    <p>Copyright: All rights Reserved</p>
+</footer>
+
+        
+</main>
+<script>
+    const testData = [
+        { name: 'ALKP', units: 'U/L', mean: 110, low: 88, high: 132 },
+        { name: 'Amylase', units: 'U/L', mean: 72.4, low: 64, high: 80.8 },
+        { name: 'Bilirubin Direct', units: 'mg/dL', mean: 0.4, low: 0.3, high: 0.5 },
+        { name: 'Bilirubin Total', units: 'mg/dL', mean: 1.22, low: 1.05, high: 1.39 },
+        { name: 'BUN', units: 'mg/dL', mean: 14.8, low: 13.2, high: 16.5 },
+        { name: 'Calcium', units: 'mg/dL', mean: 9.45, low: 8.54, high: 10.4 },
+        { name: 'Chloride (CHL)', units: 'mEq/L', mean: 96, low: 90.1, high: 102 },
+        { name: 'Cholesterol', units: 'mg/dL', mean: 210, low: 220, high: 260 },
+        { name: 'GGT', units: 'U/L', mean: 58.3, low: 40.5, high: 76 },
+        { name: 'D.HDL', units: 'mg/dL', mean: 74, low: 61.4, high: 86.6 },
+        { name: 'Iron', units: 'μg/dL', mean: 242, low: 226, high: 259 },
+        { name: 'Lipase', units: 'U/L', mean: 58.4, low: 45.4, high: 71.3 },
+        { name: 'D.LDL', units: 'mg/dL', mean: 128, low: 103, high: 152 },
+        { name: 'MG', units: 'mg/dL', mean: 2.06, low: 1.75, high: 2.36 },
+        { name: 'Phosphate(IP)', units: 'mg/dL', mean: 3, low: 2.53, high: 3.47 },
+        { name: 'Potassium (POT)', units: 'mEq/L', mean: 3.87, low: 3.64, high: 4.1 },
+        { name: 'T. Protein', units: 'g/dL', mean: 6.46, low: 5.94, high: 6.98 },
+        { name: 'Albumin', units: 'g/dL', mean: 3.98, low: 3.69, high: 4.26 },
+        { name: 'Creatinine', units: 'mg/dL', mean: 2.18, low: 1.79, high: 2.58 },
+        { name: 'SGOT(AST)', units: 'U/L', mean: 46.8, low: 37.5, high: 56.1 },
+        { name: 'SGPT(ALT)', units: 'U/L', mean: 37, low: 28.6, high: 45.4 },
+        { name: 'Sodium (SOD)', units: 'mEq/L', mean: 144, low: 138, high: 150 },
+        { name: 'TIBC', units: 'μg/dL', mean: 308, low: 271, high: 344 },
+        { name: 'Trig(TG)', units: 'mg/dL', mean: 180, low: 164, high: 196 },
+        { name: 'Uric Acid', units: 'mg/dL', mean: 4.68, low: 4.32, high: 5.04 },
+        { name: 'Glucose', units: 'mmol/l', mean: 4.71, low: 4.18, high: 94.20 },
+        { name: 'CPK', units: 'U/L', mean: 126, low: 101, high: 150 },
+        { name: 'LDH', units: 'U/L', mean: 183, low: 163, high: 203 },
+        { name: 'CO2', units: 'mEq/L', mean: 30.7, low: 24.1, high: 37.3 },
+        { name: 'IGG', units: 'mg/dL', mean: 939, low: 811, high: 1067 }
+    ];
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.style.display = 'block';
+        toast.style.zIndex = '1000';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3000);
+    }
+
+    let isEditMode = false;
+
+function toggleEditMode() {
+    isEditMode = !isEditMode;
+    const container = document.querySelector('.qc-container');
+    const editButton = document.getElementById('editButton');
+    const saveButton = document.getElementById('saveButton');
+
+    if (isEditMode) {
+        container.classList.add('edit-mode');
+        makeFieldsEditable(true);
+        editButton.style.display = 'none';
+        saveButton.style.display = 'block';
+    } else {
+        container.classList.remove('edit-mode');
+        makeFieldsEditable(false);
+        editButton.style.display = 'block';
+        saveButton.style.display = 'none';
+    }
+}
+
+function makeFieldsEditable(editable) {
+    // Make header fields editable
+    document.querySelectorAll('.editable').forEach(elem => {
+        const text = elem.textContent;
+        if (editable) {
+            elem.innerHTML = `<input type="text" value="${text}" class="editable-input">`;
+        } else {
+            elem.textContent = elem.querySelector('input')?.value || text;
+        }
+    });
+
+
+
+
+          // Make table fields editable
+          const rows = document.querySelectorAll('#dataTableBody tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (editable) {
+                    cells[0].innerHTML = `<input type="text" value="${cells[0].textContent}" class="editable-input">`;
+                    cells[1].innerHTML = `<input type="text" value="${cells[1].textContent}" class="editable-input">`;
+                    cells[3].innerHTML = `<input type="number" value="${cells[3].textContent}" class="range-edit">`;
+                    cells[4].innerHTML = `<input type="number" value="${cells[4].textContent}" class="range-edit">`;
+                    cells[5].innerHTML = `<input type="number" value="${cells[5].textContent}" class="range-edit">`;
+                } else {
+                    cells[0].textContent = cells[0].querySelector('input')?.value || cells[0].textContent;
+                    cells[1].textContent = cells[1].querySelector('input')?.value || cells[1].textContent;
+                    cells[3].textContent = cells[3].querySelector('input')?.value || cells[3].textContent;
+                    cells[4].textContent = cells[4].querySelector('input')?.value || cells[4].textContent;
+                    cells[5].textContent = cells[5].querySelector('input')?.value || cells[5].textContent;
+                }
+            });
+        }
+
+        function saveChanges() {
+            // Save all changes to localStorage
+            const data = {
+                controlName: document.querySelector('[data-field="controlName"] input')?.value,
+                lotNo: document.querySelector('[data-field="lotNo"] input')?.value,
+                tests: Array.from(document.querySelectorAll('#dataTableBody tr')).map(row => {
+                    const cells = row.querySelectorAll('td');
+                    return {
+                        name: cells[0].querySelector('input')?.value || cells[0].textContent,
+                        units: cells[1].querySelector('input')?.value || cells[1].textContent,
+                        mean: cells[3].querySelector('input')?.value || cells[3].textContent,
+                        low: cells[4].querySelector('input')?.value || cells[4].textContent,
+                        high: cells[5].querySelector('input')?.value || cells[5].textContent
+                    };
+                })
+            };
+
+            localStorage.setItem('qcSheetData', JSON.stringify(data));
+            toggleEditMode();
+            showToast('Changes saved successfully!');
+        }
+
+        function handleKeyboardNavigation(event, input) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const currentRow = input.closest('tr');
+                const nextRow = currentRow.nextElementSibling;
+                const currentIndex = Array.from(currentRow.querySelectorAll('input')).indexOf(input);
+
+                if (nextRow) {
+                    const nextInput = nextRow.querySelectorAll('input')[currentIndex];
+                    if (nextInput) {
+                        nextInput.focus();
+                        nextInput.select();
+                    }
+                }
+            }
+        }
+
+        function createTableRows() {
+            const tbody = document.getElementById('dataTableBody');
+            testData.forEach(test => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${test.name}</td>
+                    <td>${test.units}</td>
+                    <td>
+                        <input type="number" step="0.01" class="result-input" 
+                               onchange="checkResult(this, ${test.mean}, ${test.low}, ${test.high})"
+                               onkeydown="handleKeyboardNavigation(event, this)">
+                    </td>
+                    <td>${test.mean}</td>
+                    <td>${test.low}</td>
+                    <td>${test.high}</td>
+                    <td><span class="status animated">Pending</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        
+
+    function checkResult(input, mean, low, high) {
+const value = parseFloat(input.value);
+const statusSpan = input.parentElement.parentElement.querySelector('.status');
+const meanBuffer = (high - low) * 0.1;
+
+if (value < low || value > high) {
+    statusSpan.textContent = 'FAIL';
+    statusSpan.className = 'status animated status-critical';
+} else if (Math.abs(value - mean) <= meanBuffer) {
+    statusSpan.textContent = 'MEAN';
+    statusSpan.className = 'status animated status-normal';
+} else if (value < mean) {
+    statusSpan.textContent = 'LOWER';
+    statusSpan.className = 'status animated status-lower';
+} else {
+    statusSpan.textContent = 'HIGHER';
+    statusSpan.className = 'status animated status-higher';
+}
+}
+
+function exportToExcel() {
+    const wb = XLSX.utils.book_new();
+
+    // Get dynamic data from the webpage
+    const companyName = document.querySelector('.qc-header h1').textContent;
+    const systemInfo = document.querySelector('.qc-header p').textContent;
+    const controlName = document.querySelector('[data-field="controlName"]').textContent.trim();
+    const lotNo = document.querySelector('[data-field="lotNo"]').textContent.trim();
+    const currentDate = document.getElementById('currentDate').textContent;
+
+    // Create header worksheet with dynamic data
+    const headerData = [
+        [companyName],
+        [systemInfo],
+        [''],
+        ['Control Name:', controlName],
+        ['Lot No:', lotNo],
+        ['Date:', currentDate]
+    ];
+
+    // Create main data
+    const tableData = [
+        ['Test Name', 'Units', 'Result', 'Mean', 'Low', 'High', 'Status']
+    ];
+
+    // Get all table rows
+    const rows = document.querySelectorAll('#dataTableBody tr');
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const rowData = [
+            cells[0].textContent,
+            cells[1].textContent,
+            cells[2].querySelector('input').value || '',
+            cells[3].textContent,
+            cells[4].textContent,
+            cells[5].textContent,
+            cells[6].querySelector('.status').textContent
+        ];
+        tableData.push(rowData);
+    });
+
+    // Create worksheet
+    const ws = XLSX.utils.aoa_to_sheet([...headerData, [''], ...tableData]);
+
+    // Style configuration
+    ws['!merges'] = [
+        { s: { r: 0, c: 0 }, e: { r: 0, c: 6 } },  // Merge first header row
+        { s: { r: 1, c: 0 }, e: { r: 1, c: 6 } }   // Merge second header row
+    ];
+
+    // Set column widths
+    ws['!cols'] = [
+        { wch: 20 }, // Test Name
+        { wch: 10 }, // Units
+        { wch: 10 }, // Result
+        { wch: 10 }, // Mean
+        { wch: 10 }, // Low
+        { wch: 10 }, // High
+        { wch: 15 }  // Status
+    ];
+
+    // Get current date for sheet name
+    const currentDate2 = new Date().toLocaleDateString().replace(/\//g, '-');
+
+    // Add worksheet to workbook
+    XLSX.utils.book_append_sheet(wb, ws, currentDate2);
+
+    // Save file
+    XLSX.writeFile(wb, `lab_control_sheet_${currentDate2}.xlsx`);
+    showToast('Excel file exported successfully!');
+}
+
+function clearAllInputs() {
+        // Show confirmation dialog
+        if (confirm('Are you sure you want to clear all results? This action cannot be undone.')) {
+            // Get all result inputs
+            const inputs = document.querySelectorAll('.result-input');
+            
+            // Clear each input
+            inputs.forEach(input => {
+                input.value = '';
+                
+                // Reset the status
+                const statusSpan = input.parentElement.parentElement.querySelector('.status');
+                statusSpan.textContent = 'Pending';
+                statusSpan.className = 'status animated';
+            });
+            
+            // Show success message
+            showToast('All results have been cleared');
+        }
+    }
+
+
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+});
+createTableRows();
+
+
+ // Load saved data if exists
+ const savedData = localStorage.getItem('qcSheetData');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            // Implement loading saved data...
+        }
+</script>
+
+
+    <script src="js/common.js"></script>
+</body>
+</html>
